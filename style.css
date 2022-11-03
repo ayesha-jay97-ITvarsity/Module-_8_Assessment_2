@@ -1,0 +1,37 @@
+table{                                                              /* general table styling of calculator */
+    color          : #fff;
+    text-align     : center;
+    border-collapse: collapse;
+    font           : normal 3em Arial, Helvetica, sans-serif;
+}
+
+tr{                                                                 /* table rows */
+    height          : 16.02vh;                                      /* vh = vertical height, which is a proportion of the screen size. So this means that each row will be 16% of the screen height. since we have 6 rows, we say 100% div'd by 6. USing proportions can make your screen responsive  */
+    background-color: #4E494D;
+}
+
+td{                                                                 /* table data cell i.e. columns */
+    width : 25vw;                                                   /* vw = vertical width i.e. each col is 25% of the screen width (100% div'd by 4 cols) */
+    border: 1px solid #4E494D;                                    /* border width, line-type, and colour */
+}
+
+#inputBox{                                                          /* element with the id "inputBox" */
+    background-color: #4E494D;
+    text-align      : right;
+    width           : 100%;                                         /* width of box */
+    font-size       : 2em;
+    color           : white;                                      /* font colour */
+    border          : 0px;                                          /* border width */
+}
+
+.digitButton{                                                       /* style the element with the class "digitButtons" i.e. the number buttons */
+    background-color: #807E80;
+}
+
+.operatorButton{                                                    /* style the element with the class "operatorButtons" i.e. the math symbol buttons */
+    background-color: #FF9E06;
+}
+
+.ACButton{                                                           /* style the element with the class "ACButtons" i.e. the All clear button */
+    background-color: #656165;
+}

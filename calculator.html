@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel = "stylesheet" type = "text/css" href = "style.css">        <!-- link to stylesheet -->
+    </head>
+
+    <body>
+        <table border = "1">                                                  <!-- border 1 is just so that we can see the table margins of the calculator, but we'll remove the borders later -->
+
+            <tr>
+                <td colspan = "4">                                            <!-- width of 4 cols-->
+                    <input type = "text" id = "inputBox" value = "0">         <!-- when calc loads, it will display 0-->
+                </td>
+            </tr>
+
+            <tr>
+                <td class = "digitButton" onclick = "digitBtnPressed(7)">7</td>            <!-- whenever user clicks on this data cell in the table (onclick event), it will apply the digitBnPressed func and display the val 7 in the cell with the element id "inputBox" -->
+                <td class = "digitButton" onclick = "digitBtnPressed(8)">8</td>            <!-- as is, whenever the user sel's a digit, it will appr in the outputBox cell, and when they sel another digit, the new digit will replace any prior numbers sel'd before, which is not how calculators work. so we create a new var in our func called "currentValue" which stores whatever is curr'ly in the inputBox and thus allows us to add on more numbers to our inputBox without losing prev'ly sel'd val's -->
+                <td class = "digitButton" onclick = "digitBtnPressed(9)">9</td>            <!-- cos we want our numbers to have the same styling, we will give all the numbers in our html the same class name. we do the same with the operator buttons -->
+                
+                <td class = "operatorButton" onclick = "operatorBtnPressed('x')">x</td>    <!-- create the onclick event that will apply the func operatorBtnPressed and pass the multiplic sign as its param i.e. when they click on the plus sign, the multiplic sign will be sent and stored in the var "operator". Note that its best to make the param the exact same as the val displayed on the calculator i.e. use either both x as a param and to display, or either both *. Using * in the param and x on the display can lead to errors that will be difficult to find cos it won't be displayed as an error by vsc, as it an object/var we created ourselves with a val that we ourselves speci'd -->
+            </tr>
+
+            <tr>
+                <td class = "digitButton" onclick = "digitBtnPressed(4)">4</td>                       
+                <td class = "digitButton" onclick = "digitBtnPressed(5)">5</td>
+                <td class = "digitButton" onclick = "digitBtnPressed(6)">6</td>
+                
+                <td class = "operatorButton" onclick = "operatorBtnPressed('-')">-</td>    <!-- cos we want our operators to have the same styling, we will give all the operators in our html the same class name, which we'll style in our styelsheet -->
+            </tr>
+
+            <tr>
+                <td class = "digitButton" onclick = "digitBtnPressed(1)">1</td>
+                <td class = "digitButton" onclick = "digitBtnPressed(2)">2</td>
+                <td class = "digitButton" onclick = "digitBtnPressed(3)">3</td>
+                
+                <td class = "operatorButton" onclick = "operatorBtnPressed('+')">+</td>    <!-- create the onclick event that will apply the func operatorBtnPressed and pass the plus sign as its param i.e. when they click on the plus sign, the plus sign will be sent and stored in the var "operator" -->
+            </tr>
+
+            <tr>
+                <td class = "digitButton" colspan = "2" onclick = "digitBtnPressed(0)">0</td>
+
+                <td class = "ACButton" onclick = "btnACPressed()">AC</td>                  <!-- AC = All Clear. when the AC btn is pressed, we call the func to clear whatev val's are in the inputBox and replace it with the default zero, and when the user thereafter sel's val's again, then start a newLine (i.e. remove the zero) -->
+                <td class = "operatorButton" onclick = "operatorBtnPressed('÷')">÷</td>    <!-- create the onclick event that will apply the func operatorBtnPressed and pass the division sign as its param i.e. when they click on the division sign, the divis sign will be sent and stored in the var "operator" -->
+            </tr>
+
+            <tr>
+                <td class = "operatorButton" colspan = "4" onclick = "equalsBtnPressed()">=</td>
+            </tr>
+        </table>
+
+        <script>
+            var newLine = true;                                                             /* creating a global boolean-type var (i.e. T/F) where the val of newLine is set to true. So the 1st time the user opens the calc, they will 1st see the zero val, but when the user sel's buttons, they will start on a new line and whatev is curr'ly on the screen (i.e. 0) will be replaced with the butt's they've sel. TRUE = there is a val there besides the default zero. I.o.w. if there is a zero, start a newLine, if not a zero, don't start new line and conatenate whatev is there with whatev user sel's */
+            var value1;                                                                     /* create global var "value1", which will be whatev digit sel'd by the user and stored as a val in the computers memory (so we don't need to assign a val to it here) */
+            var currentOperator;                                                            /* create global vari "currentOperator", which is the math operator sel'd by user. no al assigned cos we whatev operator the user sel'd wll be the assigned val */
+            
+            /* create event handler for any button/digits pressed  */
+            function digitBtnPressed(button){                                               /* create a func called digitBtnPressed that will receive the "button" param i.e. receive val of a button that was pressed */
+                                                                                            /* we convert our func into an if/else statement, where if the newLine is true (i.e. the zero is replaced with a button sel'd by user), then replace the zero with butto's sel'd by user, and do the following with those sel'd val's */
+                if(newLine == true){                                                        /* Note: "if(newLine == true)" can also be written as simply "if(newLine)" cos we're working with boolean (i.e. only 2 opt's) */
+                    document.getElementById("inputBox").value = button;                     /* if newLine is true, then replace the default zero with whatev val's are sel'd by user */
+                    newLine = false;                                                        /* after 1st time, newLine is no longer true but is false i.e. after the 1st entry, apply the following else statement where when there are val's sel'd by user, keep those val's and concat it with whatev else is sel'd by user */
+                }                                                                        
+                else{                                                                       /* else, if newLine is not true, then store whatev is on screen (i.e. val's sel'd by user) and concaten those val's with whatev the user sel's thereafter i.e. make multi=digit numbers */                                                                 
+                    var currentValue = document.getElementById("inputBox").value;           /* we create a new var, which takes whatever val's are curently inside the "inputBox" element and stores it as the var "currentValue". So whatever val is stored in the inputBox cell as the val "currentValue" will be concatenated with whatever digits the user selects thereafter i.e. val's will no longer be replaced once anoth digit is sel'd */
+                    document.getElementById("inputBox").value = currentValue + button;      /* we want the button pressed by user to appr on the screen i.e. in the "inputBox" cell. so whatever val is sel'd (stored in "button" param), it will be displayed in the element with id "inputBox" as a value. we concatenate the val stored in currentValue with whatev button val the user sel's thereafter. problem is that now the 0 that's present when you open app/view in live server no longer disapprs when you sel a val, cos it takes whatev was already in the inputBox (0) and adds val's, so val's will display as: 072465, when the zero should disappr once val's are sel'd */
+                }
+            }
+
+            /* create event handler for AC button */
+            function btnACPressed(){                                                        /* create new func for when the AC button is pressed to reset everything to the default settings */
+                document.getElementById("inputBox").value = 0;                              /* when applied, the func will make the inputBox have a value of zero */
+                newLine = true;                                                             /* once the inputBox has the default zero val, then newLine will be applied when the user starts typing again and the sel'd val's will be replace the default zero */
+            }
+                                                                                            // another way to make a comment in JS. This type of comment does not need a closing operator
+
+            /* create event handler for mathematical operators */
+            function operatorBtnPressed(operator){                                          /* create func "operatorBtnPressed" which will receive whatev math "operator" the user sel'd as a val */
+                currentOperator = operator;                                                 /* new var "currentOperator", which will = whatev math operator is stored inside the var "operator" */
+                value1 = parseInt(document.getElementById("inputBox").value);               /* we assign a val to the var "value1" by specifying that whatev val is stored in the element with the id "inputBox", then store it as a val in "value1". This will be stored as a "text" & not a number, so we need to convert the text to number. To do this, we wrap the "parseInt()" around the element to convert the var from text to a number i.e. everything inside "parseInt" will be converted to an integer */
+                newLine = true;                                                             /* reset the val of newLine to true i.e. start on a new Line with the user sel's new digits (and store it in memory) and replace whatev is on screen with the newly sel'd digits */
+            }
+
+            /* create event handler for equals to sign */
+            function equalsBtnPressed(){
+                var value2 = parseInt(document.getElementById("inputBox").value);            /* declare a new var that will have the val of whatev is curr'ly in the inputBox and called "value2" */
+                var finalTotal;                                                              /* create an empty var, which we will later store our answer into */
+
+                switch(currentOperator){                                                     /* use the switch statement (for multi if statements and multi cases instead of just 2 like in if statement) to specify what happ's w. e. tyoe of operator */
+                    case "+":                                                                /* if the curr case operator is plus, make finalTotal = value1 + value2 */
+                        finalTotal = value1 + value2;
+                        break;         
+                    case "-":                                                                /* if the curr case operator is minus, make finalTotal = value1 - value2 */
+                        finalTotal = value1 - value2;
+                        break;                                                               /* if the case above applies, then the func is instruct'd to jump to the end of the switch statement, and not apply the other case options that follows */
+                    case "x":                                                                /* if the curr case operator is multiply, make finalTotal = value1 * value2 */
+                        finalTotal = value1 * value2;
+                        break;  
+                    case "÷":                                                                /* if the curr case operator is divide, make finalTotal = value1 / value2 */
+                        finalTotal = value1 / value2;
+                        break;    
+                }
+                document.getElementById("inputBox").value = finalTotal;                      /* where the val of finalTotal (the answer) will appr i.e. in the inputBox */
+
+                value1 = 0;                                                                  /* we reset val1 to zero once the calc is done */
+                newLine = true;                                                              /* reset the val of newLine to true i.e. start on a new Line when the user sel's new digits and replace whatev is on screen with the newly sel'd digits */
+            }
+
+        </script>
+
+    </body>
+</html>
